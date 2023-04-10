@@ -1,0 +1,39 @@
+
+import java.util.Scanner;
+public class Restaurant {
+        public static void main(String[] args) {
+            Scanner input = new Scanner(System.in);
+            String username, password;
+
+            // Admin Login
+            System.out.println("=== RESTAURANT LOGIN ===");
+            System.out.print("Enter username: ");
+            username = input.nextLine();
+            System.out.print("Enter password: ");
+            password = input.nextLine();
+
+            if (username.equals("admin") && password.equals("admin123")) {
+                System.out.println("Welcome, admin!");
+                // Admin menu
+                System.out.println("=== ADMIN MENU ===");
+                System.out.println("1. View orders");
+                System.out.println("2. Add menu items");
+                System.out.println("3. Remove menu items");
+                System.out.println("4. exit");
+
+                // TODO: implement admin menu functionality
+            } else {
+                // User Login
+                System.out.println("Welcome to the restaurant!");
+                // User menu
+                System.out.println("=== USER MENU ===");
+                System.out.println("1. View menu");
+                System.out.println("2. Place order");
+                System.out.println("3. View order status");
+                System.out.println("4. exit");
+
+                // TODO: implement user menu functionality
+            }
+        }
+    }
+
