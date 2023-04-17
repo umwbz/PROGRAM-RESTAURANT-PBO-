@@ -185,6 +185,39 @@ public class Restaurant {
             System.out.println((i + 1) + ". " + restaurant.getName() + " - " + restaurant.getAddress());
         }
     }
+ public static void addRestaurant(Scanner scanner) {
+        // Prompt user for restaurant details
+        System.out.print("Enter restaurant name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter restaurant address: ");
+        String address = scanner.nextLine();
+
+        // Create empty menu
+        Map<String, Double> foods = new HashMap<>();
+        Map<String, Double> drinks = new HashMap<>();
+        Menu menu = new Menu(foods, drinks);
+
+        // Create new restaurant object
+        Restaurant restaurant = new Restaurant(name, address, menu);
+
+        // Add restaurant to list
+        restaurantList.add(restaurant);
+
+        // Confirmation message
+        System.out.println("Restaurant added successfully!");
+    }
+
+
+    public static void deleteRestaurant(Scanner scanner) {
+        System.out.print("Enter index of restaurant to delete: ");
+        int index = Integer.parseInt(scanner.nextLine()) - 1;
+        if (index >= 0 && index < restaurantList.size()) {
+            restaurantList.remove(index);
+            System.out.println("Restaurant deleted.");
+        } else {
+            System.out.println("Invalid index. Please try again.");
+        }
+    }
 
 
 }
