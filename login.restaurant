@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class Restaurant {
  // Data restaurant
     static List<Restaurant> restaurantList = new ArrayList<>();
+ // Data Order  
+    private static List<Order> orderList = new ArrayList<>();
     
        class Restaurant {
         private String name;
@@ -50,7 +52,41 @@ public class Restaurant {
             return drinks;
         }
     }
+  class Order {
+        private int restaurantId;
+        private int menuId;
+        private int quantity;
+        private double distance;
+        private double deliveryFee;
 
+        public Order(int restaurantId, int menuId, int quantity, double distance, double deliveryFee) {
+            this.restaurantId = restaurantId;
+            this.menuId = menuId;
+            this.quantity = quantity;
+            this.distance = distance;
+            this.deliveryFee = deliveryFee;
+        }
+
+        public int getRestaurantId() {
+            return restaurantId;
+        }
+
+        public int getMenuId() {
+            return menuId;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public double getDistance() {
+            return distance;
+        }
+
+        public double getDeliveryFee() {
+            return deliveryFee;
+        }
+    }
 
     public static void main(String[] args) {
         // Hardcoded login credential
@@ -219,6 +255,81 @@ public class Restaurant {
         }
     }
 
+  public static void placeOrder() {
+        Scanner scanner = new Scanner(System.in);
+        // Prompt user for order details
+        System.out.println("Place Order");
+        System.out.print("Enter restaurant number: ");
+        int restaurantId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
+        Restaurant restaurant = restaurantList.get(restaurantId - 1);
+        System.out.println("You are ordering from " + restaurant.getName() + ", located at " + restaurant.getAddress());
+
+        System.out.println("Menu:");
+        Menu menu = restaurant.getMenu();
+        System.out.println("Foods:");
+        int foodId = 1;
+        for (String foodName : menu.getFoods().keySet()) {
+            double foodPrice = menu.getFoods().get(foodName);
+            System.out.println(foodId + ". " + foodName + " - $" + foodPrice);
+            foodId++;
+        }
+        System.out.println("Drinks:");
+        int drinkId = 1;
+        for (String drinkName : menu.getDrinks().keySet()) {
+            double drinkPrice = menu.getDrinks().get(drinkName);
+            System.out.println(drinkId + ". " + drinkName + " - $" + drinkPrice);
+            drinkId++;
+        }
+
+        System.out.print("Enter menu item number: ");
+        int menuId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
+        System.out.print("Enter quantity: ");
+        int quantity = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
+        System.out.print("Enter delivery distance (km): ");
+        double distance = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline left-over
+        System.out.print("Enter delivery fee: ");
+        double deliveryFee = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline left-over
+
+        // Create order object and save to database
+        Order order = new Order(restaurantId, menuId, quantity, distance, deliveryFee);
+        // TODO: Save order object to the database
+
+        System.out.println("Order placed successfully!");
+    }
+
+    public static void viewOrder() {
+        // Print a list of all orders made by the customer
+        System.out.println("List of Orders:");
+        for (int i = 0; i < orderList.size(); i++) {
+            Order order = orderList.get(i);
+            Restaurant restaurant = restaurantList.get(order.getRestaurantId() - 1);
+            Menu menu = restaurant.getMenu();
+            Map<String, Double> foods = menu.getFoods();
+            Map<String, Double> drinks = menu.getDrinks();
+            String foodName = "";
+            String drinkName = "";
+            for (String name : foods.keySet()) {
+                if (foods.get(name).equals(order.getMenuId())) {
+                    foodName = name;
+                }
+            }
+            for (String name : drinks.keySet()) {
+                if (drinks.get(name).equals(order.getMenuId())) {
+                    drinkName = name;
+                }
+            }
+            System.out.println((i + 1) + ". " + restaurant.getName() + " - " + restaurant.getAddress());
+            System.out.println("   Menu: " + foodName + " / " + drinkName);
+            System.out.println("   Quantity: " + order.getQuantity());
+            System.out.println("   Distance: " + order.getDistance() + " km");
+            System.out.println("   Delivery fee: $" + order.getDeliveryFee());
+        }
+    }
 
 }
 
