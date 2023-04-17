@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Scanner;
 
-public class Restaurant {
+public class Main {
  // Data restaurant
     static List<Restaurant> restaurantList = new ArrayList<>();
  // Data Order  
@@ -95,17 +95,6 @@ public class Restaurant {
         
         
          // Main menu
-        Scanner scanner = new Scanner(System.in);
-        String userInput = "";
-        while (!userInput.equals("exit")) {
-            System.out.println("Welcome to Restaurant Program!");
-            System.out.println("1. Login as admin");
-            System.out.println("2. Login as customer");
-            System.out.println("exit. Exit program");
-            System.out.print("Please enter your choice: ");
-            userInput = scanner.nextLine();
-            
-        // Main menu
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
         while (!userInput.equals("exit")) {
@@ -298,7 +287,7 @@ public class Restaurant {
         scanner.nextLine(); // Consume newline left-over
 
         // Create order object and save to database
-        Order order = new Order(restaurantId, menuId, quantity, distance, deliveryFee);
+        //Order order = new Order(restaurantId, menuId, quantity, distance, deliveryFee);
         // TODO: Save order object to the database
 
         System.out.println("Order placed successfully!");
