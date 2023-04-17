@@ -1,8 +1,56 @@
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Scanner;
+
 public class Restaurant {
  // Data restaurant
     static List<Restaurant> restaurantList = new ArrayList<>();
+    
+       class Restaurant {
+        private String name;
+        private String address;
+        private Menu menu;
+
+        public Restaurant(String name, String address, Menu menu) {
+            this.name = name;
+            this.address = address;
+            this.menu = menu;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public Menu getMenu() {
+            return menu;
+        }
+    }
+
+    class Menu {
+        private Map<String, Double> foods;
+        private Map<String, Double> drinks;
+
+        public Menu(Map<String, Double> foods, Map<String, Double> drinks) {
+            this.foods = foods;
+            this.drinks = drinks;
+        }
+
+        public Map<String, Double> getFoods() {
+            return foods;
+        }
+
+        public Map<String, Double> getDrinks() {
+            return drinks;
+        }
+    }
+
 
     public static void main(String[] args) {
         // Hardcoded login credential
@@ -129,6 +177,6 @@ public class Restaurant {
             }
         }
     }
-}
+
 }
 
