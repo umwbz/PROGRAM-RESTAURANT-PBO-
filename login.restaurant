@@ -44,6 +44,15 @@ public class Main {
             this.drinks = drinks;
         }
 
+          // method to add food to the menu
+         public void addFood(String name, double price) {
+            foods.put(name, price);
+        }
+
+        // method to add drink to the menu
+        public void addDrink(String name, double price) {
+            drinks.put(name, price);
+        }
         public Map<String, Double> getFoods() {
             return foods;
         }
@@ -220,10 +229,38 @@ public class Main {
         String address = scanner.nextLine();
 
         // Create empty menu
-        Map<String, Double> foods = new HashMap<>();
-        Map<String, Double> drinks = new HashMap<>();
-        Menu menu = new Menu(foods, drinks);
-
+          HashMap<String, Double> foods = new HashMap<>();
+          HashMap<String, Double> drinks = new HashMap<>();
+          Menu menu = new Menu(foods, drinks);
+        // Add menu to the restaurant
+            boolean addMenu = true;
+            while(addMenu) {
+                System.out.print("Add food or drink to the menu? (F/D/N): ");
+                String choice = scanner.nextLine();
+                switch(choice) {
+                    case "F":
+                        System.out.print("Enter food name: ");
+                        String foodName = scanner.nextLine();
+                        System.out.print("Enter food price: ");
+                        double foodPrice = scanner.nextDouble();
+                        scanner.nextLine();
+                        menu.addFood(foodName, foodPrice);
+                        break;
+                    case "D":
+                        System.out.print("Enter drink name: ");
+                        String drinkName = scanner.nextLine();
+                        System.out.print("Enter drink price: ");
+                        double drinkPrice = scanner.nextDouble();
+                        scanner.nextLine();
+                        menu.addDrink(drinkName, drinkPrice);
+                        break;
+                    case "N":
+                        addMenu = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice!");
+                }
+            }
         // Create new restaurant object
         Restaurant restaurant = new Restaurant(name, address, menu);
 
@@ -286,9 +323,6 @@ public class Main {
         double deliveryFee = scanner.nextDouble();
         scanner.nextLine(); // Consume newline left-over
 
-        // Create order object and save to database
-        //Order order = new Order(restaurantId, menuId, quantity, distance, deliveryFee);
-        // TODO: Save order object to the database
 
         System.out.println("Order placed successfully!");
     }
