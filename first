@@ -1,39 +1,134 @@
 
 import java.util.Scanner;
 public class Restaurant {
-        public static void main(String[] args) {
-            Scanner input = new Scanner(System.in);
-            String username, password;
+ // Data restaurant
+    static List<Restaurant> restaurantList = new ArrayList<>();
 
-            // Admin Login
-            System.out.println("=== RESTAURANT LOGIN ===");
-            System.out.print("Enter username: ");
-            username = input.nextLine();
-            System.out.print("Enter password: ");
-            password = input.nextLine();
+    public static void main(String[] args) {
+        // Hardcoded login credential
+        String adminUsername = "admin";
+        String adminPassword = "admin7";
+        
+        
+         // Main menu
+        Scanner scanner = new Scanner(System.in);
+        String userInput = "";
+        while (!userInput.equals("exit")) {
+            System.out.println("Welcome to Restaurant Program!");
+            System.out.println("1. Login as admin");
+            System.out.println("2. Login as customer");
+            System.out.println("exit. Exit program");
+            System.out.print("Please enter your choice: ");
+            userInput = scanner.nextLine();
+            
+        // Main menu
+        Scanner scanner = new Scanner(System.in);
+        String userInput = "";
+        while (!userInput.equals("exit")) {
+            System.out.println("Welcome to Restaurant Program!");
+            System.out.println("1. Login as admin");
+            System.out.println("2. Login as customer");
+            System.out.println("exit. Exit program");
+            System.out.print("Please enter your choice: ");
+            userInput = scanner.nextLine();
 
-            if (username.equals("admin") && password.equals("admin123")) {
-                System.out.println("Welcome, admin!");
-                // Admin menu
-                System.out.println("=== ADMIN MENU ===");
-                System.out.println("1. View orders");
-                System.out.println("2. Add menu items");
-                System.out.println("3. Remove menu items");
-                System.out.println("4. exit");
+            switch (userInput) {
+                case "1":
+                    // Admin menu
+                    System.out.print("Username: ");
+                    String adminUsernameInput = scanner.nextLine();
+                    System.out.print("Password: ");
+                    String adminPasswordInput = scanner.nextLine();
 
-                // TODO: implement admin menu functionality
-            } else {
-                // User Login
-                System.out.println("Welcome to the restaurant!");
-                // User menu
-                System.out.println("=== USER MENU ===");
-                System.out.println("1. View menu");
-                System.out.println("2. Place order");
-                System.out.println("3. View order status");
-                System.out.println("4. exit");
+                    if (adminUsernameInput.equals(adminUsername) && adminPasswordInput.equals(adminPassword)) {
+                        adminMenu(scanner);
+                    } else {
+                        System.out.println("Invalid username or password. Please try again.");
+                    }
+                    break;
 
-                // TODO: implement user menu functionality
+                case "2":
+                    // Customer menu
+                    customerMenu(scanner);
+                    break;
+
+                case "exit":
+                    System.out.println("Thank you for using Restaurant Program!");
+                    break;
+
+                default:
+                    System.out.println("Invalid input. Please try again.");
             }
         }
     }
+
+    // Admin menu
+    public static void adminMenu(Scanner scanner) {
+        String userInput = "";
+        while (!userInput.equals("4")) {
+            System.out.println("\nAdmin Menu");
+            System.out.println("1. View Restaurants");
+            System.out.println("2. Add Restaurant");
+            System.out.println("3. Delete Restaurant");
+            System.out.println("4. Back to Login");
+            System.out.print("Please enter your choice: ");
+            userInput = scanner.nextLine();
+
+            switch (userInput) {
+                case "1":
+                    viewRestaurants();
+                    break;
+
+                case "2":
+                    addRestaurant(scanner);
+                    break;
+
+                case "3":
+                    deleteRestaurant(scanner);
+                    break;
+
+                case "4":
+                    System.out.println("Logging out of admin account...");
+                    break;
+
+                default:
+                    System.out.println("Invalid input. Please try again.");
+            }
+        }
+    }
+
+    // Customer menu
+    public static void customerMenu(Scanner scanner) {
+        String userInput = "";
+        while (!userInput.equals("4")) {
+            System.out.println("\nCustomer Menu");
+            System.out.println("1. View Restaurants");
+            System.out.println("2. Place Order");
+            System.out.println("3. View Order History");
+            System.out.println("4. Back to Login");
+            System.out.print("Please enter your choice: ");
+            userInput = scanner.nextLine();
+
+            switch (userInput) {
+                case "1":
+                    viewRestaurants();
+                    break;
+
+                case "2":
+                    placeOrder();
+                    break;
+                case "3":
+                    viewOrder();
+                    break;
+                case "4":
+                    System.out.println("Logging out of customer account...");
+                    break;
+
+                default:
+                    System.out.println("Invalid input. Please try again.");
+            }
+        }
+    }
+}
+}
 
