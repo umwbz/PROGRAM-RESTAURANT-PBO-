@@ -164,7 +164,8 @@ public class Restaurant {
                     break;
 
                 case "2":
-                    addRestaurant(scanner);
+                    Main instance = new Main();
+                    instance.addRestaurant(scanner);
                     break;
 
                 case "3":
@@ -199,7 +200,8 @@ public class Restaurant {
                     break;
 
                 case "2":
-                    placeOrder();
+                    Main instance = new Main();
+                    instance.placeOrder();
                     break;
                 case "3":
                     viewOrder();
@@ -221,7 +223,7 @@ public class Restaurant {
             System.out.println((i + 1) + ". " + restaurant.getName() + " - " + restaurant.getAddress());
         }
     }
- public static void addRestaurant(Scanner scanner) {
+ public void addRestaurant(Scanner scanner) {
         // Prompt user for restaurant details
         System.out.print("Enter restaurant name: ");
         String name = scanner.nextLine();
@@ -255,7 +257,7 @@ public class Restaurant {
         }
     }
 
-  public static void placeOrder() {
+  public  void placeOrder() {
         Scanner scanner = new Scanner(System.in);
         // Prompt user for order details
         System.out.println("Place Order");
