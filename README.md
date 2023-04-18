@@ -15,7 +15,7 @@ foods: a map of all foods in a menu.
 drinks: a map of all drinks in a menu.
 The program uses a Scanner object to read input from the user. The program is designed to be used in the console.
 
-Here,s the output of this program 
+Here's the output of this program 
 
 ![image](https://user-images.githubusercontent.com/115135900/232648643-a91c03d2-f3c1-46bd-a271-c18876792ae4.png)
 
