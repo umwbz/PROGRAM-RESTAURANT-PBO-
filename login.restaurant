@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Scanner;
+
 
 public class Main {
  // Data restaurant
@@ -285,75 +285,135 @@ public class Main {
 
   public  void placeOrder() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Restaurant List");
+        viewRestaurants();
+
         // Prompt user for order details
         System.out.println("Place Order");
-        System.out.print("Enter restaurant number: ");
-        int restaurantId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline left-over
-        Restaurant restaurant = restaurantList.get(restaurantId - 1);
-        System.out.println("You are ordering from " + restaurant.getName() + ", located at " + restaurant.getAddress());
+        System.out.print("Select a restaurant: ");
+        int restaurantIndex = Integer.parseInt(scanner.nextLine()) - 1;
+        Restaurant selectedRestaurant = restaurantList.get(restaurantIndex);
 
-        System.out.println("Menu:");
-        Menu menu = restaurant.getMenu();
-        System.out.println("Foods:");
-        int foodId = 1;
-        for (String foodName : menu.getFoods().keySet()) {
-            double foodPrice = menu.getFoods().get(foodName);
-            System.out.println(foodId + ". " + foodName + " - $" + foodPrice);
-            foodId++;
+        // Display the restaurant's menu
+        System.out.println("\n" + selectedRestaurant.getName() + " Menu:");
+        Menu menu = selectedRestaurant.getMenu();
+        Map<String, Double> foods = menu.getFoods();
+        Map<String, Double> drinks = menu.getDrinks();
+        System.out.println("Food:");
+        int foodIndex = 1;
+        for (String foodName : foods.keySet()) {
+            double price = foods.get(foodName);
+            System.out.println(foodIndex + ". " + foodName + " - Rp " + price);
+            foodIndex++;
         }
         System.out.println("Drinks:");
-        int drinkId = 1;
-        for (String drinkName : menu.getDrinks().keySet()) {
-            double drinkPrice = menu.getDrinks().get(drinkName);
-            System.out.println(drinkId + ". " + drinkName + " - $" + drinkPrice);
-            drinkId++;
+        int drinkIndex = 1;
+        for (String drinkName : drinks.keySet()) {
+            double price = drinks.get(drinkName);
+            System.out.println(drinkIndex + ". " + drinkName + " - Rp " + price);
+            drinkIndex++;
         }
 
-        System.out.print("Enter menu item number: ");
-        int menuId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline left-over
+        // Ask for user input
+        System.out.print("Select a menu item: ");
+        int menuIndex = Integer.parseInt(scanner.nextLine()) - 1;
+        Map<String, Double> selectedMenu = null;
+        if (menuIndex < foodIndex - 1) {
+            selectedMenu = foods;
+        } else {
+            selectedMenu = drinks;
+        }
+        String[] menuKeys = selectedMenu.keySet().toArray(new String[0]);
+        String selectedMenuItem = menuKeys[menuIndex % (foodIndex - 1)];
+        Double selectedMenuItemPrice = selectedMenu.get(selectedMenuItem);
+        System.out.println("Selected menu item: " + selectedMenuItem + " - Rp " + selectedMenuItemPrice);
+
+        // Ask for user input
         System.out.print("Enter quantity: ");
-        int quantity = scanner.nextInt();
-        scanner.nextLine(); // Consume newline left-over
-        System.out.print("Enter delivery distance (km): ");
-        double distance = scanner.nextDouble();
-        scanner.nextLine(); // Consume newline left-over
-        System.out.print("Enter delivery fee: ");
-        double deliveryFee = scanner.nextDouble();
-        scanner.nextLine(); // Consume newline left-over
+        int quantity = Integer.parseInt(scanner.nextLine());
 
+        // Ask for user input
+        System.out.print("Enter distance (km): ");
+        double distance = Double.parseDouble(scanner.nextLine());
 
-        System.out.println("Order placed successfully!");
+        // Calculate delivery fee
+        double deliveryFee = Math.max(500, distance * 1000);
+
+        // Create new order object and add it to the orderList
+        Order newOrder = new Order(restaurantIndex, menuIndex, quantity, distance, deliveryFee);
+        orderList.add(newOrder);
+
+        System.out.println("Order has been placed!");
     }
 
-    public static void viewOrder() {
+   public static void viewOrder() {
         // Print a list of all orders made by the customer
         System.out.println("List of Orders:");
+        System.out.println("\nOrder History:");
+
+        if (orderList.size() == 0) {
+            System.out.println("No order history found.");
+            return;
+        }
+
         for (int i = 0; i < orderList.size(); i++) {
             Order order = orderList.get(i);
-            Restaurant restaurant = restaurantList.get(order.getRestaurantId() - 1);
+            Restaurant restaurant = restaurantList.get(order.getRestaurantId());
             Menu menu = restaurant.getMenu();
-            Map<String, Double> foods = menu.getFoods();
-            Map<String, Double> drinks = menu.getDrinks();
-            String foodName = "";
-            String drinkName = "";
-            for (String name : foods.keySet()) {
-                if (foods.get(name).equals(order.getMenuId())) {
-                    foodName = name;
-                }
-            }
-            for (String name : drinks.keySet()) {
-                if (drinks.get(name).equals(order.getMenuId())) {
-                    drinkName = name;
-                }
-            }
-            System.out.println((i + 1) + ". " + restaurant.getName() + " - " + restaurant.getAddress());
-            System.out.println("   Menu: " + foodName + " / " + drinkName);
-            System.out.println("   Quantity: " + order.getQuantity());
-            System.out.println("   Distance: " + order.getDistance() + " km");
-            System.out.println("   Delivery fee: $" + order.getDeliveryFee());
+
+            // Print order details
+            System.out.println("Order #" + (i+1));
+            System.out.println("Restaurant: " + restaurant.getName());
+            System.out.println("Item: " + getItemName(order.getMenuId(), menu));
+            System.out.println("Quantity: " + order.getQuantity());
+            System.out.println("Price per item: " + getItemPrice(order.getMenuId(), menu));
+            System.out.println("Total price: " + getTotalPrice(order.getQuantity(), getItemPrice(order.getMenuId(), menu)));
+            System.out.println("Distance: " + order.getDistance() + " km");
+            System.out.println("Delivery fee: " + order.getDeliveryFee());
+            System.out.println("Total cost: " + getTotalCost(order.getQuantity(), getItemPrice(order.getMenuId(), menu), order.getDeliveryFee()));
+            System.out.println();
         }
+    }
+
+    // Helper methods
+    private static String getItemName(int menuId, Menu menu) {
+        Map<String, Double> foods = menu.getFoods();
+        Map<String, Double> drinks = menu.getDrinks();
+
+        if (menuId <= foods.size()) {
+            // The menuId refers to a food item
+            String[] foodKeys = foods.keySet().toArray(new String[0]);
+            return foodKeys[menuId-1];
+        } else {
+            // The menuId refers to a drink item
+            String[] drinkKeys = drinks.keySet().toArray(new String[0]);
+            return drinkKeys[menuId-foods.size()-1];
+        }
+    }
+
+    private static double getItemPrice(int menuId, Menu menu) {
+        Map<String, Double> foods = menu.getFoods();
+        Map<String, Double> drinks = menu.getDrinks();
+
+        if (menuId <= foods.size()) {
+            // The menuId refers to a food item
+            String[] foodKeys = foods.keySet().toArray(new String[0]);
+            String itemName = foodKeys[menuId-1];
+            return foods.get(itemName);
+        } else {
+            // The menuId refers to a drink item
+            String[] drinkKeys = drinks.keySet().toArray(new String[0]);
+            String itemName = drinkKeys[menuId-foods.size()-1];
+            return drinks.get(itemName);
+        }
+    }
+
+    private static double getTotalPrice(int quantity, double price) {
+        return quantity * price;
+    }
+
+    private static double getTotalCost(int quantity, double price, double deliveryFee) {
+        return getTotalPrice(quantity, price) + deliveryFee;
     }
 
 }
