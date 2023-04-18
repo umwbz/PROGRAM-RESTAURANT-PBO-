@@ -15,6 +15,11 @@ foods: a map of all foods in a menu.
 drinks: a map of all drinks in a menu.
 The program uses a Scanner object to read input from the user. The program is designed to be used in the console.
 
+here's the UML (Unified Modelling Language) Diagram  of this program :
+![image](https://user-images.githubusercontent.com/115135900/232671279-d6a89b31-4210-4c25-a994-23866ece9035.png)
+
+
+
 Here's the output of this program 
 
 ![image](https://user-images.githubusercontent.com/115135900/232648643-a91c03d2-f3c1-46bd-a271-c18876792ae4.png)
